@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Favorite Movies</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <a href="index.html">Main</a>
+      </div>
+    </div>
+   
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Movie Name</th>
+          <th scope="col">Year</th>
+          <th scope="col">Genre</th>
+          <th scope="col">Tomatometer</th>
+          <th scope="col">Box Office</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Insert movie rows here -->
+      </tbody>
+    </table>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // The below code fills in the first row of the table
+//=================================================================================
+var movies = ["Jaws", "Die Hard", "Jurassic Park", "Spirited Away", "Princess Mononoke", "Thor: Ragnarok", "Avengers: Infinity War", "Captain America: Winter Soldier", "The Abyss", "The Dark Knight", "Ratatouille",
+              "Airplane!"]
+
+console.log(movies.length);
+
+for (var i = 0; i < movies.length; i++) {
+  var mov = movies[i];
+  console.log(mov);
+  var queryURL = "https://www.omdbapi.com/?t=" + mov + "&y=&plot=short&apikey=b8caf550";
+  $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+
+      // Obtain a reference to the tbody element in the DOM
+      $("tbody");
+      // Create and save a reference to new empty table row
+      var newrow = $("<tr></tr>");
+      // Create and save references to 3 td elements containing the Title, Year, and Actors from the AJAX response object
+      var title = response.Title;
+      var titledata = ("<td>" + title + "</td>");      
+      //++++++++++++++++++++++++++++++++++++++++++
+      var year = response.Year;      
+      var yeardata = ("<td>" + year + "</td>");
+      //++++++++++++++++++++++++++++++++++++++++++
+      var genre = response.Genre;      
+      var genredata = ("<td>" + genre + "</td>");
+      //++++++++++++++++++++++++++++++++++++++++++
+      var tomato = response.Ratings[1].Value;      
+      var tomatodata = ("<td>" + tomato + "</td>");
+       //++++++++++++++++++++++++++++++++++++++++++
+       var box = response.BoxOffice;      
+      var boxdata = ("<td>" + box + "</td>");
+      //++++++++++++++++++++++++++++++++++++++++++
+      // Append the td elements to the new table row
+      $(newrow).append(titledata, yeardata, genredata, tomatodata, boxdata);
+      // Append the table row to the tbody element
+      $("tbody").append(newrow);
+    });
+
+};
+
+  </script>
+</body>
+
+</html>
